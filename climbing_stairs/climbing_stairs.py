@@ -2,24 +2,27 @@
 
 import sys
 
-cache = {}
-
 
 def climbing_stairs(n, cache=None):
     if n <= 1:
         return 1
     if n == 2:
         return 2
-    if n in cache:
-        return cache[n]
-    val = climbing_stairs(n - 1) + climbing_stairs(n - 2) + climbing_stairs(n - 3)
-    cache[n] = val
+    if cache is None:
+        val = climbing_stairs(n - 1) + climbing_stairs(n - 2) + climbing_stairs(n - 3)
+
+    if cache is not None:
+        if cache[n] > 1:
+            return cache[n]
+        val = climbing_stairs(n - 1, cache) + climbing_stairs(n - 2, cache) + climbing_stairs(n - 3, cache)
+        cache[n] = val
+
     return val
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        num_stairs = int(sys.argv[1], cache)
+        num_stairs = int(sys.argv[1])
         print(
             "There are {ways} ways for a child to jump {n} stairs.".format(
                 ways=climbing_stairs(num_stairs), n=num_stairs
